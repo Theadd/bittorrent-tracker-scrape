@@ -1,5 +1,5 @@
-var Scraper = require('./scraper')
+var Scrape = require('./scraper')
 var Torrent = require('./torrent')
 
 module.exports = Torrent
-module.exports.Scraper = Scraper
+module.exports.Scrape = Scrape

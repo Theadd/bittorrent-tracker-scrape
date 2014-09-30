@@ -28,8 +28,7 @@ Torrent.prototype.sanitize = function () {
   self._announce = []
   for (var i in self._rawAnnounce) {
     if (self.isValidAnnounceURL(self._rawAnnounce[i])) {
-      //TODO: sanitize
-      self._announce.push(self._rawAnnounce[i])
+      self._announce.push(patterns.apply(self._rawAnnounce[i]))
     }
   }
 }
