@@ -27,7 +27,7 @@ Torrent.prototype.sanitize = function () {
   var self = this
   self._announce = []
   for (var i in self._rawAnnounce) {
-    if (self.isValidAnnounceURL(self._rawAnnounce[i])) {
+    if (patterns.isValidAnnounceURL(self._rawAnnounce[i])) {
       self._announce.push(patterns.apply(self._rawAnnounce[i]))
     }
   }
@@ -38,15 +38,4 @@ Torrent.prototype.request = function (callback) {
     announce = (self._announce.length) ? self._announce : self._rawAnnounce
 
   new scraper(self._hash, announce, self._opts, callback)
-}
-
-Torrent.prototype.isValidAnnounceURL = function(url) {
-  var blacklisted = false
-  for (key in patterns.blacklist) {
-    if (url.indexOf(patterns.blacklist[key]) != -1) {
-      blacklisted = true
-      break
-    }
-  }
-  return !blacklisted
 }
