@@ -5,6 +5,7 @@
 var extend = require('util')._extend
 var patterns = require('./lib/patterns')
 var scraper = require('./scraper')
+var updater = require('./updater')
 
 module.exports = Torrent
 
@@ -19,7 +20,8 @@ function Torrent (hash, announce, opts) {
   self._opts = extend({
     interval: 800,
     getAll: false,
-    maxRetries: 3
+    maxRetries: 3,
+    updateOnScrapeFail: true
   }, opts)
 }
 
@@ -36,7 +38,19 @@ Torrent.prototype.sanitize = function () {
 Torrent.prototype.request = function (callback) {
   var self = this
 
-  new scraper(self._hash, self.getAnnounce(false, true), self._opts, callback)
+  new scraper(self._hash, self.getAnnounce(false, true), self._opts, function (err, res) {
+    if (err) {
+      if (self._opts.updateOnScrapeFail) {
+        new updater(self._hash, self.getAnnounce(), self._opts, function (err, res) {
+          callback(err, res)
+        })
+      } else {
+        callback(err, res)
+      }
+    } else {
+      callback(err, res)
+    }
+  })
 }
 
 Torrent.prototype.getAnnounce = function (raw, udpOnly) {
@@ -50,6 +64,7 @@ Torrent.prototype.getAnnounce = function (raw, udpOnly) {
     for (var i in announce) {
       udpAnnounce.push("udp" + announce[i].slice(announce[i].indexOf("://")))
     }
+    return udpAnnounce
   } else {
     return announce
   }
