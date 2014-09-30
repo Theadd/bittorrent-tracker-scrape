@@ -34,8 +34,23 @@ Torrent.prototype.sanitize = function () {
 }
 
 Torrent.prototype.request = function (callback) {
-  var self = this,
-    announce = (self._announce.length) ? self._announce : self._rawAnnounce
+  var self = this
 
-  new scraper(self._hash, announce, self._opts, callback)
+  new scraper(self._hash, self.getAnnounce(false, true), self._opts, callback)
+}
+
+Torrent.prototype.getAnnounce = function (raw, udpOnly) {
+  raw = raw || false
+  udpOnly = udpOnly || false
+  var self = this,
+    announce = (!raw && self._announce.length) ? self._announce : self._rawAnnounce
+
+  if (udpOnly) {
+    var udpAnnounce = []
+    for (var i in announce) {
+      udpAnnounce.push("udp" + announce[i].slice(announce[i].indexOf("://")))
+    }
+  } else {
+    return announce
+  }
 }
