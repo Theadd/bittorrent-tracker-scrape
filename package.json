@@ -1,0 +1,29 @@
+{
+  "name": "bittorrent-tracker-scrape",
+  "description": "BitTorrent tracker scrape implementation",
+  "version": "0.0.1",
+  "author": {
+    "name": "Theadd",
+    "url": "https://github.com/Theadd"
+  },
+  "bugs": {
+    "url": "https://github.com/Theadd/bittorrent-tracker-scrape/issues"
+  },
+  "dependencies": {
+    "bittorrent-tracker": "git+https://git@github.com/Theadd/bittorrent-tracker.git"
+  },
+  "homepage": "https://github.com/Theadd/bittorrent-tracker-scrape",
+  "keywords": [
+    "torrent",
+    "bittorrent",
+    "tracker",
+    "scrape",
+    "update"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Theadd/bittorrent-tracker-scrape.git"
+  }
+}
