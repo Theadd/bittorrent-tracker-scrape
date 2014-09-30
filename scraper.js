@@ -4,6 +4,7 @@
 
 var extend = require('util')._extend
 var BittorrentTracker = require('bittorrent-tracker')
+var common = require('./lib/common')
 
 module.exports = Scraper
 
@@ -30,7 +31,7 @@ function Scraper (hash, announce, opts, cb) {
   })
 
   self._scraperTimeout = function () {
-    var results = getReliablePeers(self._results)
+    var results = common.getReliablePeers(self._results)
     clearTimeout(self._timer)
     if ((results == false || self._results.length < Math.min(Math.ceil(self._announce.length / 2), 5)) && self._availableRetries > 0) {
       --self._availableRetries
@@ -46,29 +47,4 @@ function Scraper (hash, announce, opts, cb) {
   }
 
   self._timer = setTimeout( self._scraperTimeout, self._opts.interval)
-}
-
-var getReliablePeers = function (results) {
-  var peers, index = -1
-
-  for (var i in results) {
-    if (index == -1) {
-      peers = extend({}, results[i])
-      index = i
-      continue
-    }
-    if (results[i].complete > peers.complete) {
-      peers = extend({}, results[i])
-      index = i
-    } else {
-      if (results[i].complete == peers.complete) {
-        if (results[i].downloaded > peers.downloaded) {
-          peers = extend({}, results[i])
-          index = i
-        }
-      }
-    }
-  }
-
-  return (index != -1) ? peers : false
 }
