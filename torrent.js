@@ -21,8 +21,10 @@ function Torrent (hash, announce, opts) {
     interval: 800,
     getAll: false,
     maxRetries: 3,
-    updateOnScrapeFail: true
+    updateOnScrapeFail: true,
+    defaultAnnounceOnEmpty: true
   }, opts)
+  self._sanitized = false
 }
 
 Torrent.prototype.sanitize = function () {
@@ -33,6 +35,7 @@ Torrent.prototype.sanitize = function () {
       self._announce.push(patterns.apply(self._rawAnnounce[i]))
     }
   }
+  self._sanitized = true
 }
 
 Torrent.prototype.request = function (callback) {
@@ -54,18 +57,37 @@ Torrent.prototype.request = function (callback) {
 }
 
 Torrent.prototype.getAnnounce = function (raw, udpOnly) {
+  var self = this, announceSet = [], i, url
   raw = raw || false
   udpOnly = udpOnly || false
-  var self = this,
-    announce = (!raw && self._announce.length) ? self._announce : self._rawAnnounce
+  if (!raw && !self._sanitized) {
+    self.sanitize()
+  }
+  var announce = (!raw) ? self._announce : self._rawAnnounce
+
+  if (!announce.length && self._opts.defaultAnnounceOnEmpty) {
+    announce = [
+      "udp://tracker.openbittorrent.com:80/announce",
+      "udp://open.demonii.com:1337/announce",
+      "udp://tracker.publicbt.com:80/announce",
+      "udp://tracker.istole.it:80/announce]"
+    ]
+  }
 
   if (udpOnly) {
-    var udpAnnounce = []
-    for (var i in announce) {
-      udpAnnounce.push("udp" + announce[i].slice(announce[i].indexOf("://")))
+    for (i in announce) {
+      url = "udp" + announce[i].slice(announce[i].indexOf("://"))
+      if (announceSet.indexOf(url) == -1) {
+        announceSet.push(url)
+      }
     }
-    return udpAnnounce
   } else {
-    return announce
+    for (i in announce) {
+      if (announceSet.indexOf(announce[i]) == -1) {
+        announceSet.push(announce[i])
+      }
+    }
   }
+
+  return announceSet
 }
