@@ -9,9 +9,9 @@ var updater = require('./updater')
 
 module.exports = Torrent
 
-function Torrent (hash, announce, opts) {
+function Torrent (hash, announce, opts, callback) {
   var self = this
-  if (!(self instanceof Torrent)) return new Torrent(hash, announce, opts)
+  if (!(self instanceof Torrent)) return new Torrent(hash, announce, opts, callback)
 
   self._hash = hash
   self._rawAnnounce = (typeof announce === 'string') ? [ announce ] : announce
@@ -25,6 +25,10 @@ function Torrent (hash, announce, opts) {
     defaultAnnounceOnEmpty: true
   }, opts)
   self._sanitized = false
+
+  if (typeof callback === "function") {
+    self.request(callback)
+  }
 }
 
 Torrent.prototype.sanitize = function () {

@@ -46,9 +46,6 @@ function Updater (hash, announce, opts, cb) {
         results.responses = self._results.length
         results.announces = self._announce.length
       }
-      /*self._client.removeAllListeners('error')
-      self._client.removeAllListeners('update')
-      self._client = null*/
       cb((results != false) ? null : new Error('No peers found'), (self._opts.getAll) ? self._results : results)
     }
   }
