@@ -12,7 +12,7 @@ function ScrapeWorker (hash, announce, opts, callback) {
   opts = opts || {}
 
   var workerFarm = require('worker-farm')
-    , workers    = workerFarm(require.resolve('./torrent'))
+    , workers    = workerFarm({maxCallTime: opts.maxCallTime || 5000}, require.resolve('./torrent'))
 
   workers(hash, announce, opts, function(err,  res) {
     callback(err, res)

@@ -10,7 +10,7 @@
     "url": "https://github.com/Theadd/bittorrent-tracker-scrape/issues"
   },
   "dependencies": {
-    "bittorrent-tracker": "git+https://git@github.com/Theadd/bittorrent-tracker.git",
+    "bittorrent-tracker": "^2.7.0",
     "worker-farm": "^1.0.1"
   },
   "homepage": "https://github.com/Theadd/bittorrent-tracker-scrape",
