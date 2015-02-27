@@ -1,22 +1,22 @@
 {
-  "name": "bittorrent-tracker-scrape",
-  "description": "BitTorrent tracker scrape implementation",
-  "version": "0.1.0",
+  "name": "bittorrent-workers",
+  "description": "BitTorrent workers for retrieving metadata and peers of torrents",
+  "version": "1.0.0",
   "author": {
     "name": "Theadd",
     "url": "https://github.com/Theadd"
   },
   "bugs": {
-    "url": "https://github.com/Theadd/bittorrent-tracker-scrape/issues"
+    "url": "https://github.com/Theadd/bittorrent-workers/issues"
   },
   "dependencies": {
     "bittorrent-tracker": "^3.1.2",
     "node.extend": "^1.1.3",
     "read-torrent": "^1.3.0",
     "webtorrent": "^0.27.2",
-    "worker-farm": "^1.0.1"
+    "worker-farm": "^1.2.0"
   },
-  "homepage": "https://github.com/Theadd/bittorrent-tracker-scrape",
+  "homepage": "https://github.com/Theadd/bittorrent-workers",
   "keywords": [
     "torrent",
     "bittorrent",
@@ -28,6 +28,6 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Theadd/bittorrent-tracker-scrape.git"
+    "url": "git://github.com/Theadd/bittorrent-workers.git"
   }
 }

@@ -15,7 +15,6 @@ function Metadata (target, opts, callback) {
   self._parseInput(target)
 
   self._opts = extend(true, {
-    interval: 800,
     sources: {
       "torcache.net": function (info_hash) {
         return "http://torcache.net/torrent/" + info_hash + ".torrent"
