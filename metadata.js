@@ -36,7 +36,8 @@ function Metadata (target, opts, callback) {
     targetInputFirst: true,
     useSources: true,
     disableMagnet: false,
-    outputAsList: false
+    outputAsList: false,
+    info: false
   }, opts || {})
 
   if (typeof callback === "function") {
@@ -117,6 +118,9 @@ Metadata.prototype._request = function (item, list, callback) {
 
   self._get(item, function (err, res) {
     if (res) {
+      if (self._opts.info != false) {
+        res.info = self._opts.info
+      }
       if (!self._opts.outputAsList) {
         return callback(null, res)
       } else {
@@ -124,11 +128,15 @@ Metadata.prototype._request = function (item, list, callback) {
       }
     } else {
       if (self._opts.outputAsList) {
-        list.push({
+        var _res = {
           "source": item.source,
           "link": item.link,
           "error": err
-        })
+        }
+        if (self._opts.info != false) {
+          _res.info = self._opts.info
+        }
+        list.push(_res)
       }
     }
     if (self._queue.length) {
