@@ -144,7 +144,11 @@ Metadata.prototype._request = function (item, list, callback) {
       self._request(nextItem, list, callback)
     } else {
       if (!self._opts.outputAsList) {
-        return callback(new Error ("Invalid response from sources."))
+        if (self._opts.info != false) {
+          return callback(new Error ("Invalid response from sources."), { info: self._opts.info })
+        } else {
+          return callback(new Error ("Invalid response from sources."))
+        }
       } else {
         return callback(null, list)
       }

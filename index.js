@@ -28,7 +28,7 @@ function ScrapeWorker (hash, announce, opts, callback) {
   var workerFarm = require('worker-farm')
     , workers    = workerFarm({maxCallTime: opts.maxCallTime || 5000}, require.resolve('./torrent'))
 
-  workers(hash, announce, opts, function(err,  res) {
+  workers(hash, announce, opts, function(err, res) {
     callback(err, res)
     workerFarm.end(workers)
   })
@@ -37,10 +37,14 @@ function ScrapeWorker (hash, announce, opts, callback) {
 function MetadataWorker (target, opts, callback) {
   opts = opts || {}
 
-  var workerFarm = require('worker-farm')
+  var info = opts.info || false,
+    workerFarm = require('worker-farm')
     , workers    = workerFarm({maxCallTime: opts.maxCallTime || 90000}, require.resolve('./metadata'))
 
-  workers(target, opts, function(err,  res) {
+  workers(target, opts, function(err, res) {
+    if (typeof res !== "object" && info != false) {
+      res = {"info": info}
+    }
     callback(err, res)
     workerFarm.end(workers)
   })
